@@ -1,0 +1,485 @@
+%-----------------------------------------------------------------------------------
+%   PACKAGES 
+%-----------------------------------------------------------------------------------
+
+\documentclass[a4paper,12pt,abstracton]{scrartcl}
+
+\usepackage[margin=.9in]{geometry}
+
+
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{mathtools,mathrsfs}
+\usepackage{centernot}
+\usepackage{wrapfig}
+
+\usepackage{tikz,tikz-cd,asymptote}
+\usetikzlibrary{positioning, fit, calc}
+
+\usepackage[most]{tcolorbox}
+\usepackage{hyperref,wrapfig}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumerate}
+\usepackage[a]{esvect}
+\usepackage{tocloft}
+
+
+\usepackage{sectsty}
+\makeatletter
+\def\@seccntformat#1{\textcolor{Red}{\hspace*{0.2em}$\textbf{\S}$\hspace{-0.3em} \csname the#1\endcsname}\hspace{0.5em}}
+\makeatother
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{On The General Formula of Roots of Polynomials}
+\rhead{\thepage}
+\cfoot{} 
+
+\setlength{\parindent}{0cm}
+
+%-----------------------------------------------------------------------------------
+%   COMMANDS
+%-----------------------------------------------------------------------------------
+
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\sgn}{\text{sgn\hspace{0.5mm}}}
+\newcommand{\osc}{\text{osc\hspace{0.5mm}}}
+\newcommand{\foralls}{\hspace{2mm}\forall}
+\newcommand{\rimply}{\Rightarrow}
+\newcommand{\limply}{\Leftarrow}
+\newcommand{\underdash}{\rule{0.25cm}{0.1mm}\hspace{0.5mm}}
+\newcommand{\undersmalldash}{\rule{0.18cm}{0.1mm}\hspace{0.3mm}}
+\newcommand{\s}{\square}
+\newcommand{\xr}{\xrightarrow}
+
+\newcommand{\genstirlingI}[3]{%
+  \genfrac{[}{]}{0pt}{#1}{#2}{#3}%
+}
+\newcommand{\genstirlingII}[3]{%
+  \genfrac{\{}{\}}{0pt}{#1}{#2}{#3}%
+}
+\newcommand{\genlah}[3]{%
+  \genfrac{\lfloor}{\rfloor}{0pt}{#1}{#2}{#3}%
+}
+\newcommand{\stirlingI}[2]{\genstirlingI{}{#1}{#2}}
+\newcommand{\stirlingII}[2]{\genstirlingII{}{#1}{#2}}
+\newcommand{\lah}[2]{\genlah{}{#1}{#2}}
+
+%-----------------------------------------------------------------------------------
+%   ENVIROMENTS
+%-----------------------------------------------------------------------------------
+
+\newtheoremstyle{dotlessP}{}{}{}{}{\color{RedViolet}\bfseries}{.}{ }{}
+\theoremstyle{dotlessP}
+\newtheorem{problem}{Problem}
+\newtheoremstyle{dotlessS}{}{}{}{}{\color{ForestGreen}\bfseries}{.}{ }{}
+\theoremstyle{dotlessS}
+\newtheorem*{solution}{Solution}
+
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+\theoremstyle{definition}
+\newtheorem*{theorem}{Theorem}
+
+\newtcolorbox{example_box}{
+enhanced jigsaw,
+breakable,
+pad at break*=1mm,
+colback=Apricot!5!white,
+colframe=Melon!75!black,
+sharp corners,
+before={\vspace{2mm}},
+after={\vspace{2mm}}
+}
+
+
+\newtcolorbox{definition_box}{
+enhanced jigsaw,
+breakable,
+pad at break*=1mm,
+colback=lightgray!12!white,
+colframe=RedViolet!45!black,
+colbacktitle=Gray!38!white,
+before={\vspace{4mm}},
+after={\vspace{2mm}},
+sharp corners
+}
+
+
+\newtcolorbox{problem_box}{
+enhanced jigsaw,
+breakable,
+pad at break*=1mm,
+colback=white!5!white,
+colframe=gray!75!black,
+colbacktitle=white!28!white,
+sharp corners,
+before={\vspace{6mm}},
+after={\vspace{2mm}}
+}
+
+\newtcolorbox{problem_box_title}[1]{
+enhanced jigsaw,
+breakable,
+pad at break*=1mm,
+colback=Apricot!5!white,
+colframe=Melon!75!black,
+sharp corners,
+before={\vspace{2mm}},
+after={\vspace{2mm}},
+title={#1}, 
+fonttitle=\bfseries
+}
+
+\newtcolorbox{claim_box}{
+enhanced jigsaw,
+breakable,
+pad at break*=1mm,
+colback=white,
+colframe=white,
+borderline west={2pt}{0pt}{white},
+sharp corners,
+before={\vspace{1mm}},
+after={\vspace{0.8mm}}
+}
+
+\newtcolorbox{remark_box}{
+enhanced jigsaw,
+breakable,
+pad at break*=1mm,
+colback=lightgray!15!white,
+colframe=lightgray!15!white,
+borderline west={2pt}{0pt}{Black},
+sharp corners,
+before={\vspace{2mm}},
+after={\vspace{2mm}}
+}
+
+
+\begin{document}
+
+%-----------------------------------------------------------------------------------
+%   TOP MATTERS
+%-----------------------------------------------------------------------------------
+
+\title{On The General Formula of Roots of Polynomials}
+\subtitle{}
+\author{Rounak Sarkar}
+\date{\today}
+\maketitle
+
+\begin{abstract}
+The quadratic formula is very well known, slightly less well known are the formulas for the solutions of cubic and quartic equations. In this article we start by discussing the Sridharacharya's quadratic formula and show the proof for Del Ferro-Tartaglia-Cardano method for solving the cubic equation. We also discuss a method for solving quartics different than Ferrari's method. And we lastly we prove a weak Abel-Ruffini theorem which shows the non-existence of a general formula for the solutions of polynomials with degree higher than four. 
+\end{abstract}
+
+\tableofcontents
+
+\eject
+
+
+%-----------------------------------------------------------------------------------
+%   MAIN BODY
+%-----------------------------------------------------------------------------------
+
+\section{Linear And Quadratics}
+
+We will for the sake of completeness, start our discussion with first degree polynomials. Though no one calls it a linear formula, the fact still stands that there does exist a formula for the solution of the equation $ax+b=0$ where $a\neq 0$. That is $x=-\frac{b}{a}$\\
+
+One thing to note here, is that we are usig the term "formula" very loosely, we will come to what we actually mean by that word formally when we start thinking about quintics and above, for now the intuition one has about the word "formula" will suffice.\\
+
+The most popular formula people know regarding the solutions of polynomials is the quadratic formula, which gives us the formula for the solutions of the equations of the form $ax^2+bx+c=0$ where $a\neq 0$.\\
+\begin{align*}
+x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}
+\end{align*}
+
+The derivation of this formula comes from the idea of completing the square, we start with the given equation and the proof goes as follows:
+\begin{align*}
+&ax^2+bx+c=0\\
+\implies& x^2+\frac{b}{a}x+\frac{c}{a}=0\\
+\implies& x^2+2\bigg(\frac{b}{2a}\bigg)(x)+\bigg(\frac{b}{2a}\bigg)^2=\frac{b^2-4ac}{4a^2}\\
+\implies& \bigg(x+\frac{b}{2a}\bigg)^2=\frac{b^2-4ac}{4a^2}\\
+\implies& x+\frac{b}{2a}=\pm\frac{\sqrt{b^2-4ac}}{2a}\\
+\implies& x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}
+\end{align*} 
+
+So the solutions to the equation are:
+\begin{align*}
+r_1=-\frac{b}{2a}+D\\
+r_2=-\frac{b}{2a}-D
+\end{align*}
+
+where, $D=\sqrt{\frac{b^2}{4a^2}-\frac{c}{a}}$
+
+Here we note that given a polynomial equation $a_nx^n+\cdots+a_0=0$. We can always start by dividing by the leading coefficients since it is non-zero. This suggests that looking at polynomial equations where the polynomial is monic will suffice. So from now onward we will only look at equations of the form 
+\begin{align*}
+x^n+a_1x^{n-1}+\cdots+a_n=0
+\end{align*}
+
+\eject
+
+\section{Cubics}
+
+Before starting we will note something important, given an equation of the form,
+\begin{align*}
+x^n+a_1x^{n-1}+\cdots+a_n=0
+\end{align*}
+
+By substituting $x=t-\frac{a_1}{n}$, it is easy to see that the equation further reduces to 
+\begin{align*}
+t^n+b_2t^{n-2}+\cdots+b_n=0
+\end{align*}
+
+So we start with $x^3+px+q=0$ (This is called the depressed cubic)\\
+consider the identity $(u+v)^3-3uv(u+v)-(u^3+v^3)=0$. We can solve for $u$ and $v$ given the equations,
+$\begin{cases}
+uv=-\frac{p}{3}\\
+u^3+v^3=-q
+\end{cases}$
+
+which will give us $x=u+v$
+
+solving the pair of equations,
+$\begin{cases}
+u^3v^3=-\frac{p^3}{27}\\
+u^3+v^3=-q
+\end{cases}$
+
+we get, $u^3,v^3=-\frac{q}{2}\pm\sqrt{\frac{q^2}{4}+\frac{p^3}{27}}$\\
+So, $u,v\in\bigg\{\sqrt[3]{-\frac{q}{2}\pm\sqrt{\frac{q^2}{4}+\frac{p^3}{27}}},\omega\sqrt[3]{-\frac{q}{2}\pm\sqrt{\frac{q^2}{4}+\frac{p^3}{27}}},\omega^2\sqrt[3]{-\frac{q}{2}\pm\sqrt{\frac{q^2}{4}+\frac{p^3}{27}}}\bigg\}$
+This gives us in total $18$ possibilities for $x$. It can be checked that among these only the following are valid. Let, $u=\sqrt[3]{-\frac{q}{2}+\sqrt{\frac{q^2}{4}+\frac{p^3}{27}}}$ and $v=\sqrt[3]{-\frac{q}{2}-\sqrt{\frac{q^2}{4}+\frac{p^3}{27}}}$
+\begin{align*}
+&x=\sqrt[3]{-\frac{q}{2}+\sqrt{\frac{q^2}{4}+\frac{p^3}{27}}}+\sqrt[3]{-\frac{q}{2}-\sqrt{\frac{q^2}{4}+\frac{p^3}{27}}}=u+v\\
+&x=\omega\sqrt[3]{-\frac{q}{2}+\sqrt{\frac{q^2}{4}+\frac{p^3}{27}}}+\omega^2\sqrt[3]{-\frac{q}{2}-\sqrt{\frac{q^2}{4}+\frac{p^3}{27}}}=\omega u+\omega^2 v\\
+&x=\omega^2\sqrt[3]{-\frac{q}{2}+\sqrt{\frac{q^2}{4}+\frac{p^3}{27}}}+\omega\sqrt[3]{-\frac{q}{2}-\sqrt{\frac{q^2}{4}+\frac{p^3}{27}}}=\omega^2 u+\omega v
+\end{align*}
+
+So the solutions to the equation $ax^3+bx^2+cx+d=0$ would be,
+\begin{align*}
+&r_1=-\frac{b}{3a}+\sqrt[3]{-\frac{q}{2}+\sqrt{\frac{q^2}{4}+\frac{p^3}{27}}}+\sqrt[3]{-\frac{q}{2}-\sqrt{\frac{q^2}{4}+\frac{p^3}{27}}}=k+u+v\\
+&r_2=-\frac{b}{3a}+\omega\sqrt[3]{-\frac{q}{2}+\sqrt{\frac{q^2}{4}+\frac{p^3}{27}}}+\omega^2\sqrt[3]{-\frac{q}{2}-\sqrt{\frac{q^2}{4}+\frac{p^3}{27}}}=k+\omega u+\omega^2 v\\
+&r_3=-\frac{b}{3a}+\omega^2\sqrt[3]{-\frac{q}{2}+\sqrt{\frac{q^2}{4}+\frac{p^3}{27}}}+\omega\sqrt[3]{-\frac{q}{2}-\sqrt{\frac{q^2}{4}+\frac{p^3}{27}}}=k+\omega^2 u+\omega v
+\end{align*}
+where,
+\begin{align*}
+&k=-\frac{b}{3a}\\
+&p=\frac{3ac-b^2}{3a^2}\\
+&q=\frac{2b^3-9abc+27a^2d}{27a^3}
+\end{align*} 
+
+\eject
+
+\section{Quartics}
+
+Similar as before we will start with the equation $x^4+px^2+qx+r=0$.\\
+
+It should be mentioned that we won't write out the full expression for the quartic formula. The expression is too large to be handled properly, so we will just write out the method through which we can get to the solution through the use of radicals, instead of writing out the monolithic expression.
+
+Our first step is to factor the polynomial into quadratics and then solve each of them using the quadratic formula. We want,
+\begin{align*}
+(x^2+\alpha x+\beta)(x^2+\gamma x+\delta)=x^4+px^2+qx+r
+\end{align*}
+
+So the equations we get are,
+\begin{align*}
+&\alpha+\gamma=0\\
+&\alpha\gamma+\beta+\delta=p\\
+&\alpha\delta+\beta\gamma=q\\
+&\beta\delta=r
+\end{align*}
+
+We have, $\gamma=-\alpha$, we first eliminate $\alpha$ and $\gamma$, note that we get the equations,
+\begin{align*}
+&\beta+\delta-\alpha^2=p\\
+&\alpha(\delta-\beta)=q\\
+&\beta\delta=r
+\end{align*}
+
+So, $\alpha^2=\frac{q^2}{(\delta-\beta)^2}=\beta+\delta-p$\\
+
+$\implies(\beta+\delta-p)(\beta-\delta)^2-q^2=0$\\
+
+Let, $t=\beta+\delta$, then
+$(t-p)(t^2-4r)-q^2=0$\\
+Which we can solve using the cubic formula, giving us the value of $\beta+\delta$, but we have $\beta\delta=r$. So we can solve for $\beta$ and $\delta$ using the quadratic formula.\\
+We also have $\alpha\gamma+\beta\delta=p$ giving us the value of $\alpha$ and $\gamma$, from each case we get quadratic equations $x^2+\alpha x+\beta=0$ and $x^2+\gamma x+\delta=0$, which then we can solve to get possible solutions for the quartic, finally we have to check which solutions actually satisfy the given equation.\\
+
+The popular method of solving quartic through radicals is the Ferrari's method, the method we have given above is far inelegant compared to Ferrari's method.
+
+\eject
+
+\section{Crucial Observations}
+
+One important thing one may realize is that in a formula we write down a relation between the coefficients of the polynomial and the roots, thus a natural thing to look at would be the vieta's formulae, if the polynomial $x^n-s_1x^{n-1}+\cdots+(-1)^ns_n$ has roots $r_1,\cdots,r_n$ then we get the following set of equations:
+\begin{align*}
+s_k=\sum_{1\leq i_1<\cdots<i_k\leq n}{r_{i_1}\cdots r_{i_k}} \text{ for } k\in\{1,\cdots,n\}
+\end{align*}
+
+Thus a formula itself represents a relation between $r_i$ and $s_1,\cdots,s_n$. Each $s_i$ is a polynomial in the variable of the roots $r_1,\cdots,r_n$. The first important realization is that each of these $s_i$ are symmetric, that is any permutation of the variables $r_1,\cdots,r_n$ fixes each $s_i$. These are called the Elementary Symmetric Polynomial.\\
+
+The next crucial observation comes, when we try to write down the radical parts of the roots in the terms of the roots:
+\begin{align*}
+&\text{In case of the quadratic formula, } D=\frac{r_1-r_2}{2}\\
+&\text{In case of the cubic formula, } u=\frac{r_1+\omega^2 r_2+\omega r_3}{3} \text{ and } v=\frac{r_1+\omega r_2+\omega^2 r_3}{3}
+\end{align*}
+
+One can write a similar expression for the case of quartic equation. What is striking is that, in each case we have a some composition of addition, subtraction, multiplication, division and radicals on the coefficients, i.e the symmetric polynomials on $r_i$'s on the left hand side\\
+And on the right hand side we have a polynomial on $r_i$'s that is not symmetric. Intuitively it might also be clear that this must happen if a formula exists, because if every radical was symmetric, then formula can never evaluate to any $r_i$ as the polynomial $r_i$ itself is not symmetric.\\
+
+In fact this also gives the intuition that such an occurrence might be rare. While at first the existence of a formula might feel natural, this gives insight that the existence of such radical expressions that let's us get outside of the symmetric polynomials through the use of symmetric polynomials and reach a root, may be a very special occurrence.\\
+
+We will see that one of the reasons why quintics and polynomials of higher degree don't have a general formula, comes from the fact that $5-3=2$. 
+
+\eject
+
+\section{Quintics And Above}
+
+For the previous sections we only used basic algebra. Though some calculations may be too complicated, only elementary things gave us formulae for the solutions for the roots of linear to quartic polynomials. To go further, more specifically to determine whether there can even exist a "formula" for the roots of higher degree polynomials, we would need to use the language of groups and a little bit of fields. Although it should be mentioned that we will need an extremely basic amount of it. 
+
+\subsection{Understanding The Statement}
+
+
+The statement that there is no general formula for the roots of a polynomial of degree greater than or equal to 5 is a very well known statement. Though one might be able easily sense the meaning of the statement as written above, it is important for one to understand the fact that if we don't manage to write down the statement formally we can really get nowhere. Many ambiguities can be very easily pointed out. For example, what does one even mean by a general formula, if we don't understand the meaning of this then we would not be able to understand what it means for such a thing to not exist. Someone can point out that the polynomial $(x-2)^5$ is a polynomial of degree $5$, but the roots can be written without running into any problem at all, how does not having a general formula affect this?\\
+
+Previous observations have already given us some idea on where to start. We want to write down a relation between the coefficients of the polynomial and the roots of the polynomial, i.e a relation between the elementary symmetric polynomials on $x_i$ and some $x_i$ itself. Thus, our question really becomes that whether there is a function which takes $s_1,\cdots,s_n$ as input and gives $x_i$ as output for some $i\in\{1,\cdots,n\}$. But as we have already seen before, we don't want just any kind of function, we want functions that are a finite composition of addition, subtraction,  multiplication, division and radicals. But still this is a very hard statement to work with. So for the final "simplification" we use the language of fields.\\
+
+We start with a rational function in terms of $s_1,\cdots,s_n$ that is some $f\in\mathbb{C}(s_1,\cdots,s_n)$ and then we "add" $f^{1/k}$ to the set for some $k\in\mathbb{N}$. By "add" we mean that we consider the set of rational functions in terms of $s_1,\cdots,s_n,f^{1/k}$ which will be denoted as $F(f^{1/k})$ where $F=\mathbb{C}(s_1,\cdots,s_n)$. And then we continue doing this procedure. And after finitely many iterations we want to get to a set which will contain our desired "formula" and thus will contain $x_i$ for some $i$.\\
+
+So our statement will become:
+
+\textbf{Let } $s_1,\cdots,s_n$ \textbf{ be the symmetric polynomials in the } $n\geq 5$ \textbf{ variables } $x_1,\cdots,x_n$ \\ \textbf{Let }  $F_0=\mathbb{C}(s_1,\cdots,s_n)$ \textbf{ and define a sequence of fields } $F_i=F_{i-1}(f_{i-1}^{1/k_{i-1}})$ \textbf{ where } $f_{i-1}\in F_{i-1}$ \textbf{ and } $k_{i-1}\in\mathbb{N}.$ \\
+ \textbf{ Then for all } $m\in\mathbb{N},$
+$x_i\notin F_m$ \textbf{ for any } $i\in\{1,\cdots,n\}$\\
+
+This is a reformulation of the statement of the famous Abel-Ruffini Theorem. In this article we will prove a much more weaker version of this statement. Which is given below:\\
+
+\textbf{Let } $s_1,\cdots,s_n$ \textbf{ be the symmetric polynomials in the } $n\geq 5$ \textbf{ variables } $x_1,\cdots,x_n$ \\ \textbf{Let }  $F_0=\mathbb{C}(s_1,\cdots,s_n)$ \textbf{ and define a sequence of fields } $F_i=F_{i-1}(f_{i-1}^{1/k_{i-1}})$ \textbf{ where } $f_{i-1}\in F_{i-1}$ \textbf{ and } $k_{i-1}\in\mathbb{N}.$ \textbf{ with } $f_{i-1}^{1/k_{i-1}}\in\mathbb{C}(x_1,\cdots,x_n)$ \\
+ \textbf{ Then for all } $m\in\mathbb{N},$
+$x_i\notin F_m$ \textbf{ for any } $i\in\{1,\cdots,n\}$\\
+
+To motivate why the extra condition may be reasonable to assume, notice that in the formula for the quadratic and cubic, the radical parts evaluate to polynomials in $x_1,\cdots,x_n$. This must happen because $x_i$ itself is a polynomial in $x_1,\cdots,x_n$. Thus it may be reasonable to assume that at each step of the extension, we only add those radicals in $s_1,\cdots,s_n$ such that they evaluate to a rational function in $x_1,\cdots,x_n$.
+
+\subsection{A Result in Group Theory}
+
+To begin the proof we need a theorem from group theory, which will give us the first hint on why $n\geq 5$ behaves differently. we consider the behaviour of the alternating group $A_n$(The group of all even permutations of $\{1,\cdots,n\}$). More specifically we will focus on the question of finding homomorphisms from $A_n\rightarrow\mathbb{C}^{\times}$. As difficult as this question may appear at first, the question is surprisingly easy to answer when we closely look at the properties of each element of $A_n$.\\
+Let $\phi:A_n\rightarrow\mathbb{C}^{\times}$ be a group homomorphism.
+
+Note that for any $\sigma\in A_n$, we can write \\
+$\sigma=\tau_1\tau_2\cdots\tau_{2k-1}\tau_{2k}$ \\
+for some $k\in\mathbb{N}$ where $\tau_i$ are transpositions.\\
+
+Now notice that $(i\ j)(j\ k)=(i\ j\ k)$ where $i,j,k$ are distinct. and $(i\ j)(k\ l)=(i\ j\ k)(j\ k\ l)$ where $i,j,k,l$ are distinct. This shows that every element of $A_n$ is actually a product of three cycles. That is $\sigma=\alpha_1\cdots\alpha_m$ for some $m\in\mathbb{N}$ where $\alpha_i$ are three cycles.\\
+
+And for any three cycle $\alpha$ we have that $\alpha^3=e$ where $e$ is the identity map(The do-nothing permutation). Thus,
+\begin{align*}
+&\phi(\alpha^3)=1\\
+\implies&\phi(\alpha)^3=1\\
+\implies&\phi(\alpha)\in\{1,\omega,\omega^2\}
+\end{align*}
+
+So $\phi(\sigma)\in\{1,\omega,\omega^2\}$ which extremely simplifies our question.\\
+
+First, we don't need the case of $A_1$ as the question of radicals is not a concern to get to the solution of the equation\\
+
+If we consider the case of $A_2$ we only have the trivial homomorphism since $A_2=\{e\}$\\ 
+
+For the case of $A_3$ we can easily construct a non-trivial homomorphism, 
+\begin{align*}
+\phi:&A_3\rightarrow\mathbb{C}^{\times}\\
+&e\mapsto 1\\
+&(1\ 2\ 3)\mapsto\omega\\
+&(1\ 3\ 2)\mapsto\omega^2
+\end{align*}
+
+For the case of $A_4$ we can similarly find a construction for a non-trivial homomorphism. For example:
+\begin{align*}
+\phi:&e\mapsto 1 &(1\ 4\ 3)\mapsto\omega^2\\
+&(1\ 2\ 3)\mapsto\omega &(2\ 3\ 4)\mapsto\omega\\
+&(1\ 3\ 2)\mapsto\omega^2 &(2\ 4\ 3)\mapsto\omega^2\\
+&(1\ 2\ 4)\mapsto\omega &(1\ 2)(3\ 4)\mapsto\omega^2\\
+&(1\ 4\ 2)\mapsto\omega^2 &(1\ 3)(2\ 4)\mapsto\omega\\
+&(1\ 3\ 4)\mapsto\omega &(1\ 4)(2\ 3)\mapsto 1
+\end{align*}
+
+One may expect similar type of homomorphisms to exist for $n\geq 5$. I will encourage the reader to try and construct similar homomorphisms, but we won't attempt that here, as $A_5$ has $60$ elements and $A_6$ has $360$ elements(Try to find the number of elements of $A_n$!). Amazingly it turns out that there is no non-trivial homomorphism $\phi$ when $n\geq 5$\\
+
+Our first observation would be\\ 
+$(i\ j\ k)=(j\ k)(i\ k\ j)(j\ k)$.\\
+So every three cycle is "almost" a conjugate to its inverse, but the problem is that $(j\ k)$ is not an element of $A_n$. Now we finally use the fact that $n\geq 5\implies n-3\geq 2$(5-3=2!!), so we still have atleast $2$ extra elements to work with. Take $p,q$ to be two such elements, simply take,\\
+$(i\ j\ k)=(p\ q)(j\ k)(i\ k\ j)(j\ k)(p\ q)$.\\
+Which works because disjoint cycles commute with each other, so $(p\ q)$ will cancel with itself. Thus we get that for any three cycle $\alpha\in A_n$ there exists $\pi\in A_n$ such that $\alpha=\pi\alpha^{-1}\pi^{-1}$. This gives,
+\begin{align*}
+&\phi(\alpha)=\phi(\alpha^{-1})\\
+\implies&\phi(\alpha)\in\{1,-1\}
+\end{align*}
+
+So, $\phi(\alpha)=1$ for all three cycles $\alpha$. And thus we get that $\phi(\sigma)=1$ for all $\sigma\in A_n$.\\
+
+We will call this lemma 1:\\
+\underline{Lemma 1}:
+\textbf{For } $n\geq 5$ \textbf{ the only homomorphism from } $A_n$ \textbf{ to } $\mathbb{C}^{\times}$ \textbf{ is the trivial homomorphism.}\\
+
+This is the distinction that comes into place when $n\geq 5$.(We will see the case of $n=2$ at the end.)
+
+\subsection{Connecting Permutations With Polynomials}
+
+We finally come to how groups will help us solve our problem. For any permutation $\sigma\in\mathfrak{S}_n$, we define,\\
+$\sigma(f(x_1,\cdots,x_n))=f(x_{\sigma(1)},\cdots,x_{\sigma(n)})$\\
+One can easily check that this is actually just a group action of $\mathfrak{S}_n$ on $\mathbb{C}(x_1,\cdots,x_n)$ and also satisfies simple properties such as $\sigma(fg+h)=\sigma(f)\sigma(g)+\sigma(h)$. And if a group $G$ acts on $X$, we use the notation $X^H$ to denote the set of all elements in $X$ that fixed by all the elements of the subgroup $H$ of $G$.
+
+From here one can easily notice the following chain of sub-fields:\\
+
+$\mathbb{C}(s_1,\cdots,s_n)\subseteq\mathbb{C}(x_1,\cdots,x_n)^{\mathfrak{S}_n}\subseteq\mathbb{C}(x_1,\cdots,x_n)^{A_n}\subseteq\mathbb{C}(x_1,\cdots,x_n)$\\
+
+For ease of writing we will denote,
+\begin{align*}
+&K=\mathbb{C}(s_1,\cdots,s_n)\\
+&L=\mathbb{C}(x_1,\cdots,x_n)^{\mathfrak{S}_n}\\
+&M=\mathbb{C}(x_1,\cdots,x_n)^{A_n}\\
+&N=\mathbb{C}(x_1,\cdots,x_n)
+\end{align*}
+
+(In fact it turns out that $K=L$, this fact is called the Fundamental Theorem of Symmetric Polynomials). We first prove a lemma that is actually quite surprising at a first glance:\\
+\underline{Lemma 2}:\\
+\textbf{Given } $f\in K$ \textbf{ such that } $f^{1/k}\in N$ \textbf{ for some } $k\in\mathbb{N}$,\\
+\textbf{Then } $f^{1/k}\in M$
+
+
+\begin{proof}[\textbf{Proof}]
+To prove this we start by defining a map $\chi:A_n\rightarrow\mathbb{C}^{\times}$ as,
+\begin{align*}
+\chi(\sigma)=\frac{\sigma(f^{1/k})}{f^{1/k}}
+\end{align*}
+
+The map is indeed well defined, since
+\begin{align*}
+\bigg(\frac{\sigma(f^{1/k})}{f^{1/k}}\bigg)^k=\frac{\sigma(f^{1/k})^k}{f}=\frac{\sigma(f)}{f}
+\end{align*}
+
+Now $\sigma(f)=f$ for any $\sigma\in A_n$, since $f\in K$. This gives that $\frac{\sigma(f^{1/k})}{f^{1/k}}$ is indeed an element of $\mathbb{C}^{\times}$, and in fact it a $k^\text{th}$ root of unity which we will denote as $\zeta_{\sigma}$.
+
+Notice that,
+\begin{align*}
+\chi(\sigma\tau)=\frac{\sigma(\tau(f^{1/k}))}{f^{1/k}}=\frac{\sigma(\zeta_{\tau}f^{1/k})}{f^{1/k}}=\frac{\zeta_{\tau}\sigma(f^{1/k})}{f^{1/k}}=\zeta_{\sigma}\zeta_{\tau}=\chi(\sigma)\chi(\tau)
+\end{align*}
+
+Which means that $\chi$ is a homomorphism, so by our lemma 1, we get that $\chi\equiv 1$
+So $\sigma(f^{1/k})=f^{1/k}$ for all $\sigma\in A_n$. Thus $f^{1/k}\in M$
+\end{proof}
+
+One can easily notice that this proof will not only hold for $K$ but also any sub-field $\mathcal{F}$ of $M$. By that we mean that given any sub-field $\mathcal{F}\subseteq M$ and $f\in\mathcal{F}$ with $f^{1/k}\in N$ for some $k\in\mathbb{N}$, then $f^{1/k}\in M$ so the extension again satisfies $F(f^{1/k})\subseteq M$. With this knowledge at our disposal we finally return to the statement we wanted to prove:\\
+
+\textbf{Let } $s_1,\cdots,s_n$ \textbf{ be the symmetric polynomials in the } $n\geq 5$ \textbf{ variables } $x_1,\cdots,x_n$ \\ \textbf{Let }  $F_0=\mathbb{C}(s_1,\cdots,s_n)$ \textbf{ and define a sequence of fields } $F_i=F_{i-1}(f_{i-1}^{1/k_{i-1}})$ \textbf{ where } $f_{i-1}\in F_{i-1}$ \textbf{ and } $k_{i-1}\in\mathbb{N}.$ \textbf{ with } $f_{i-1}^{1/k_{i-1}}\in\mathbb{C}(x_1,\cdots,x_n)$ \\
+ \textbf{ Then for all } $m\in\mathbb{N},$
+$x_i\notin F_m$ \textbf{ for any } $i\in\{1,\cdots,n\}$\\
+
+And we notice that $F_m\subseteq M$ for all $m\in\mathbb{N}$ but taking $\sigma=(i\ j)(k\ l)\in A_n$ we get that, $\sigma(x_i)\neq x_i$(Note that this fails when $n=2$)\\
+so, $x_i\notin M$ for any $i\in\{1,\cdots,n\}$\\
+And thus, $x_i\notin F_m$ for all $m\in\mathbb{N}$
+
+
+\end{document}
