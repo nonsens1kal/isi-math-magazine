@@ -1,0 +1,32 @@
+\ProvidesPackage{magazine}
+\RequirePackage[utf8]{inputenc}
+\RequirePackage[T1]{fontenc}
+\RequirePackage{amsmath,amssymb,amsthm,mathtools}
+\RequirePackage{graphicx,tikz,enumitem}
+\RequirePackage[hidelinks]{hyperref}
+
+% Theorem environments (shared numbering per article)
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+% Common macros
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+
+% Article header: title, author, and a table-of-contents entry
+\newcommand{\articleheader}[3]{% title, author, affiliation/year
+  \chapter{#1}
+  \begin{center}\large\textit{#2}\\[2pt]\small #3\end{center}
+  \vspace{1em}
+}
