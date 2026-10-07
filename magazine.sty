@@ -1,13 +1,85 @@
+\NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{magazine}
+
+%---------------------------------------------------------------
+%   PACKAGES  (xcolor must come before tikz and tcolorbox)
+%---------------------------------------------------------------
 \RequirePackage[utf8]{inputenc}
 \RequirePackage[T1]{fontenc}
-\RequirePackage{amsmath,amssymb,amsthm,mathtools}
-\RequirePackage{graphicx,tikz,enumitem}
-\RequirePackage[hidelinks]{hyperref}
+\RequirePackage{mlmodern}
+\RequirePackage[margin=.9in]{geometry}
 
-% Theorem environments (shared numbering per article)
+\RequirePackage{amsmath,amsthm,amssymb}
+\RequirePackage{mathtools,mathrsfs}
+\RequirePackage{centernot}
+\RequirePackage{wrapfig}
+\RequirePackage{graphicx}
+
+\RequirePackage[dvipsnames]{xcolor}
+\RequirePackage{tikz,tikz-cd}
+\usetikzlibrary{positioning, fit, calc}
+\RequirePackage[most]{tcolorbox}
+\RequirePackage[shortlabels]{enumitem}   % replaces `enumerate`; [(a)] still works
+\RequirePackage[a]{esvect}
+
+%---------------------------------------------------------------
+%   SECTION STYLE, HEADERS, PARAGRAPHS
+%---------------------------------------------------------------
+\def\@seccntformat#1{\textcolor{Red}{\hspace*{0.2em}$\textbf{\S}$\hspace{-0.3em} \csname the#1\endcsname}\hspace{0.5em}}
+
+\RequirePackage[headsepline]{scrlayer-scrpage}
+\clearpairofpagestyles
+\automark[chapter]{chapter}              % header shows the current article's title
+\renewcommand*{\chaptermarkformat}{}     % ...without a chapter number
+\ihead{\headmark}
+\ohead{\pagemark}
+\setkomafont{pageheadfoot}{\normalfont}
+\setkomafont{pagenumber}{\normalfont}
+\renewcommand*{\chapterpagestyle}{scrheadings}  % same header on article opening pages
+\pagestyle{scrheadings}
+
+\setlength{\parindent}{0cm}
+
+%---------------------------------------------------------------
+%   COMMANDS
+%---------------------------------------------------------------
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\QQ}{\mathbb{Q}}
+
+\newcommand{\nonadj}{\,\neg\textsf{adj}\,}
+\newcommand{\adj}{\,\textsf{adj}\,}
+\newcommand{\sgn}{\text{sgn\hspace{0.5mm}}}
+\newcommand{\osc}{\text{osc\hspace{0.5mm}}}
+\newcommand{\foralls}{\hspace{2mm}\forall}
+\newcommand{\rimply}{\Rightarrow}
+\newcommand{\limply}{\Leftarrow}
+\newcommand{\underdash}{\rule{0.25cm}{0.1mm}\hspace{0.5mm}}
+\newcommand{\undersmalldash}{\rule{0.18cm}{0.1mm}\hspace{0.3mm}}
+\newcommand{\s}{\square}
+\newcommand{\xr}{\xrightarrow}
+
+\newcommand{\genstirlingI}[3]{\genfrac{\lbrack}{\rbrack}{0pt}{#1}{#2}{#3}}
+\newcommand{\genstirlingII}[3]{\genfrac{\{}{\}}{0pt}{#1}{#2}{#3}}
+\newcommand{\genlah}[3]{\genfrac{\lfloor}{\rfloor}{0pt}{#1}{#2}{#3}}
+\newcommand{\stirlingI}[2]{\genstirlingI{}{#1}{#2}}
+\newcommand{\stirlingII}[2]{\genstirlingII{}{#1}{#2}}
+\newcommand{\lah}[2]{\genlah{}{#1}{#2}}
+
+%---------------------------------------------------------------
+%   THEOREM-LIKE ENVIRONMENTS
+%---------------------------------------------------------------
 \theoremstyle{plain}
-\newtheorem{theorem}{Theorem}[section]
+\newtheorem{theorem}{Theorem}[chapter]
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{corollary}[theorem]{Corollary}
@@ -17,16 +89,76 @@
 \theoremstyle{remark}
 \newtheorem*{remark}{Remark}
 
-% Common macros
-\newcommand{\N}{\mathbb{N}}
-\newcommand{\Z}{\mathbb{Z}}
-\newcommand{\Q}{\mathbb{Q}}
-\newcommand{\R}{\mathbb{R}}
-\newcommand{\C}{\mathbb{C}}
+\newtheoremstyle{dotlessP}{}{}{}{}{\color{RedViolet}\bfseries}{.}{ }{}
+\theoremstyle{dotlessP}
+\newtheorem{problem}{Problem}[chapter]
+\newtheoremstyle{dotlessS}{}{}{}{}{\color{ForestGreen}\bfseries}{.}{ }{}
+\theoremstyle{dotlessS}
+\newtheorem*{solution}{Solution}
 
-% Article header: title, author, and a table-of-contents entry
-\newcommand{\articleheader}[3]{% title, author, affiliation/year
+\newenvironment{abstract}
+  {\begin{quote}\small\noindent\textbf{Abstract.}\ }
+  {\end{quote}}
+
+%---------------------------------------------------------------
+%   TCOLORBOXES
+%---------------------------------------------------------------
+\tcbset{
+  base/.style={
+    arc=0mm, bottomtitle=0.5mm, boxrule=0mm,
+    colbacktitle=black!10!white, coltitle=black, fonttitle=\bfseries,
+    left=2.5mm, leftrule=1mm, right=3.5mm, title={#1}, toptitle=0.75mm,
+  }
+}
+\definecolor{brandblue}{rgb}{0.34, 0.7, 1}
+
+\newtcolorbox{mainbox}[1]{enhanced jigsaw, breakable, colframe=brandblue, base={#1}}
+\newtcolorbox{subbox}[1]{colframe=black!30!white, base={#1}}
+
+\newtcolorbox{definition_box}{
+  enhanced jigsaw, breakable, pad at break*=1mm,
+  colback=lightgray!12!white, colframe=RedViolet!45!black,
+  colbacktitle=Gray!38!white, before={\vspace{4mm}}, after={\vspace{2mm}}, sharp corners}
+
+\newtcolorbox{problem_box}{
+  enhanced jigsaw, breakable, pad at break*=1mm,
+  colback=white!5!white, colframe=gray!75!black, colbacktitle=white!28!white,
+  sharp corners, before={\vspace{6mm}}, after={\vspace{2mm}}}
+
+\newtcolorbox{problem_box_1}{
+  enhanced jigsaw, breakable, pad at break*=1mm,
+  colback=SeaGreen!5!white, colframe=SeaGreen!75!black, colbacktitle=Black!28!white,
+  sharp corners, before={\vspace{6mm}}, after={\vspace{2mm}}}
+
+\newtcolorbox{problem_box_title}[1]{
+  enhanced jigsaw, breakable, pad at break*=1mm,
+  colback=Apricot!5!white, colframe=Melon!75!black, sharp corners,
+  before={\vspace{2mm}}, after={\vspace{2mm}}, title={#1}, fonttitle=\bfseries}
+
+\newtcolorbox{claim_box}{
+  enhanced jigsaw, breakable, pad at break*=1mm,
+  colback=white, colframe=white, borderline west={2pt}{0pt}{white},
+  sharp corners, before={\vspace{1mm}}, after={\vspace{0.8mm}}}
+
+\newtcolorbox{example_box}{
+  enhanced jigsaw, breakable, pad at break*=1mm,
+  colback=lightgray!12!white, colframe=lightgray!15!white,
+  borderline west={2pt}{0pt}{black}, sharp corners,
+  before={\vspace{2mm}}, after={\vspace{2mm}}}
+
+\newtcolorbox{remark_box}{
+  enhanced jigsaw, breakable, pad at break*=1mm,
+  colback=Apricot!5!white, colframe=Melon!75!black, sharp corners,
+  before={\vspace{2mm}}, after={\vspace{2mm}}}
+
+%---------------------------------------------------------------
+%   ARTICLE HEADER  (keep before hyperref)
+%---------------------------------------------------------------
+\newcommand{\articleheader}[3]{%
   \chapter{#1}
   \begin{center}\large\textit{#2}\\[2pt]\small #3\end{center}
   \vspace{1em}
 }
+
+% hyperref should be loaded last
+\RequirePackage[hidelinks]{hyperref}
