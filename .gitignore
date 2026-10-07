@@ -1,0 +1,42 @@
+# --- LaTeX build files ---
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.synctex(busy)
+*.nav
+*.snm
+*.vrb
+*.idx
+*.ind
+*.ilg
+*.dvi
+*.xdv
+
+# TikZ externalization and other generated figures
+*-figure*.pdf
+*-figure*.md5
+*-figure*.dpth
+*-figure*.log
+*.pgf-plot.*
+
+# --- Compiled output (build in CI, publish via Releases) ---
+/main.pdf
+/preview.pdf
+
+# --- Editor and OS clutter ---
+.DS_Store
+Thumbs.db
+*~
+*.swp
+.vscode/
+.idea/
