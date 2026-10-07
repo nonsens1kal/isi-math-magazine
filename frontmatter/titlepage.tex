@@ -1,0 +1,18 @@
+\begin{titlepage}
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture, overlay]
+
+  % Full-bleed cover art
+  \node[inner sep=0pt] at (current page.center)
+    {\includegraphics[width=\paperwidth, height=\paperheight]{frontmatter/cover.jpg}};
+
+  % Semi-transparent band so the title stays readable on any artwork
+  \node[fill=black, fill opacity=0.55, text opacity=1, text=white,
+        minimum width=\paperwidth, inner ysep=1.2cm, align=center]
+    at ([yshift=-6cm]current page.center)
+    {{\fontsize{44}{50}\selectfont\bfseries ISI Math Magazine}\\[10pt]
+     {\Large\itshape ISI Math Magazine}\\[14pt]
+     {\large Volume 1 \quad$\cdot$\quad Issue 1 \quad$\cdot$\quad October 2026}};
+
+\end{tikzpicture}
+\end{titlepage}
