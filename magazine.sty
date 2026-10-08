@@ -152,7 +152,7 @@
   before={\vspace{2mm}}, after={\vspace{2mm}}}
 
 %---------------------------------------------------------------
-%   ARTICLE HEADER  (keep before hyperref)
+%   ARTICLE HEADER
 %---------------------------------------------------------------
 \newcommand{\articleheader}[3]{%
   \chapter{#1}
@@ -160,5 +160,15 @@
   \vspace{1em}
 }
 
-% hyperref should be loaded last
+%---------------------------------------------------------------
+%   LOADED LAST: hyperref, then etoc
+%---------------------------------------------------------------
 \RequirePackage[hidelinks]{hyperref}
+\RequirePackage{etoc}
+
+% Contents list for the current article only (its sections and subsections)
+\newcommand{\articletoc}{%
+  {\setcounter{tocdepth}{2}%
+   \etocsettocstyle{\noindent\textbf{Contents}\par\smallskip}{\bigskip}%
+   \localtableofcontents}%
+}
