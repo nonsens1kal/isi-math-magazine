@@ -9,7 +9,10 @@
 \frontmatter
 \input{frontmatter/titlepage}
 \input{frontmatter/editorial}
+
+\setcounter{tocdepth}{0}      % main contents: article titles only
 \tableofcontents
+\setcounter{tocdepth}{2}      % restore for the lists inside the articles
 
 \mainmatter
 \input{articles/gfrp/article}
